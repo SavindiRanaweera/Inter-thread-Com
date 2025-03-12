@@ -14,4 +14,12 @@ public class ReleaseConnectionServlet extends HttpServlet {
     protected void doDelete ( HttpServletRequest req, HttpServletResponse resp ) throws ServletException, IOException {
         super.doDelete ( req, resp );
     }
+
+    private void releaseConnection(String id, HttpServletResponse resp) throws  IOException {
+        System.out.println ( "Releasing connection " + id );
+    }
+
+    private void releaseAllConnections(HttpServletResponse resp) throws IOException {
+        System.out.println ( "Releasing all connections" );
+    }
 }
