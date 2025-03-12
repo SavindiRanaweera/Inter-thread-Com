@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Properties;
 
 public class MontisoriCP {
-    private static final int DEFAULT_POOL_SIZE = 4;
+    private static final int DEFAULT_POOL_SIZE = 5;
 
     private final HashMap<Integer, Connection> MAIN_POOL = new HashMap<>();
     private final HashMap<Integer, Connection> CONSUMER_POOL = new HashMap<>();
-    private final int poolSize;
+    private int poolSize ;
 
     public MontisoriCP() {
         this(DEFAULT_POOL_SIZE);
@@ -26,6 +26,9 @@ public class MontisoriCP {
             throw new RuntimeException(e);
         }
     }
+    public int getPoolSize() {
+        return poolSize;
+    }
 
     private void initializePool() throws IOException, SQLException, ClassNotFoundException {
         Properties properties = new Properties();
@@ -36,6 +39,7 @@ public class MontisoriCP {
         String database = properties.getProperty("app.db.database");
         String user = properties.getProperty("app.db.user");
         String password = properties.getProperty("app.db.password");
+        poolSize = Integer.parseInt ( properties.getProperty ( "app.db.poolSize") );
 
         Class.forName("com.mysql.cj.jdbc.Driver");
 
