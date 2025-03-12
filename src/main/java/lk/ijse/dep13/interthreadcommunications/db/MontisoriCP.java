@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.UUID;
 
 public class MontisoriCP {
     private static final int DEFAULT_POOL_SIZE = 5;
@@ -44,9 +45,11 @@ public class MontisoriCP {
         Class.forName("com.mysql.cj.jdbc.Driver");
 
         for (int i = 0; i < poolSize; i++) {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://%s:%s/%s"
-                    .formatted(host, port, database), user, password);
-            MAIN_POOL.put((i + 1) * 10, connection);
+            Connection connection = DriverManager.getConnection (
+                    "jdbc:mysql://%s:%s/%s".formatted ( host, port, database ), user, password );
+
+            String uuidKey = UUID.randomUUID ( ).toString ( );
+            MAIN_POOL.put ( Integer.valueOf ( uuidKey ), connection );
         }
     }
 }
