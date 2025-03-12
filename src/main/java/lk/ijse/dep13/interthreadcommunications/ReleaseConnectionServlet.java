@@ -5,8 +5,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lk.ijse.dep13.interthreadcommunications.db.MontisoriCP;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,10 +33,20 @@ public class ReleaseConnectionServlet extends HttpServlet {
     }
 
     private void releaseConnection(String id, HttpServletResponse resp) throws  IOException {
-        System.out.println ( "Releasing connection " + id );
+        MontisoriCP connectionPool = (MontisoriCP ) getServletContext().getAttribute("datasource");
+        connectionPool.releaseConnection ( Integer.valueOf(id.trim ()) );
+
+        resp.setContentType("text/html");
+        PrintWriter out = resp.getWriter ();
+        out.println ( "<h1>Connection Id: "+ id + " released </h1>" );
     }
 
     private void releaseAllConnections(HttpServletResponse resp) throws IOException {
-        System.out.println ( "Releasing all connections" );
+        MontisoriCP connectionPool = (MontisoriCP ) getServletContext().getAttribute("datasource");
+        connectionPool.releaseAllConnections ( );
+
+        resp.setContentType("text/html");
+        PrintWriter out = resp.getWriter ();
+        out.println ( "<h1>All Connection</h1>" );
     }
 }
