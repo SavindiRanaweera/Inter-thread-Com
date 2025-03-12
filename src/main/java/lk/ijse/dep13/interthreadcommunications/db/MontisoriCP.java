@@ -72,5 +72,18 @@ public class MontisoriCP {
 
     }
 
+    public synchronized void releaseConnection(Integer id){
+        if (!CONSUMER_POOL.containsKey(id)) throw new RuntimeException("Invalid Connection ID");
+        Connection connection = CONSUMER_POOL.get(id);
+        CONSUMER_POOL.remove(id);
+        MAIN_POOL.put(id, connection);
+        notify ();
+    }
+
+    public void releaseAllConnections(){
+        CONSUMER_POOL.forEach(MAIN_POOL::put);
+        CONSUMER_POOL.clear();
+    }
+
 
 }
