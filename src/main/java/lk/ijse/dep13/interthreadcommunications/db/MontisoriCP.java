@@ -40,7 +40,8 @@ public class MontisoriCP {
         String database = properties.getProperty("app.db.database");
         String user = properties.getProperty("app.db.user");
         String password = properties.getProperty("app.db.password");
-        poolSize = Integer.parseInt ( properties.getProperty ( "app.db.poolSize") );
+
+        poolSize = Integer.parseInt(properties.getProperty("app.db.poolSize", "5"));
 
         Class.forName("com.mysql.cj.jdbc.Driver");
 
