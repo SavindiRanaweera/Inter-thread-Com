@@ -52,4 +52,25 @@ public class MontisoriCP {
             MAIN_POOL.put ( Integer.valueOf ( uuidKey ), connection );
         }
     }
+
+    public record ConnectionWrapper(Integer id, Connection connection) {
+    }
+
+    public synchronized ConnectionWrapper getConnection() {
+        while (MAIN_POOL.isEmpty()) {
+            try{
+                wait ();
+            }catch (InterruptedException e){
+                throw new RuntimeException(e);
+            }
+        }
+        Integer key = MAIN_POOL.keySet().stream().findFirst().get();
+        Connection connection = MAIN_POOL.get(key);
+        MAIN_POOL.remove(key);
+        CONSUMER_POOL.put(key, connection);
+        return new ConnectionWrapper(key, connection);
+
+    }
+
+
 }
